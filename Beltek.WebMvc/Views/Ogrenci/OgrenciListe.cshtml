@@ -1,0 +1,101 @@
+﻿@using System.Collections;
+@model IList<Ogrenci>
+
+@{
+    ViewData["Title"] = "Öğrenci Listeleme";
+}
+
+@* meta description ekleme seo işlemlerinde kullanılır. *@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="@ViewData["Description"]" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>OgrenciListe</title>
+</head>
+<body>
+    <h3>ViewData ile gelen Öğrenciler</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Ad</th>
+                <th>Soyad</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            @for (int i = 0; i < 2; i++)
+            {
+                <tr>
+                    @* <th>@Model[i].Id</th> *@
+                    <th>@Model[i].Ad</th>
+                    <th>@Model[i].Soyad</th>
+
+                </tr>
+
+              @*   <tr>
+                    <td>@ViewBag.ogrenciler[i].Id</td>
+                    <td>@ViewBag.ogrenciler[i].Ad</td>
+                    <td>@ViewBag.ogrenciler[i].Soyad</td>
+                </tr>
+                <tr>
+                    <td>@(((Ogrenci)((((IList)ViewData["students"])[i]))).Id)</td>
+                    <td>@(((Ogrenci)((((IList)ViewData["students"])[i]))).Ad)</td>
+                    <td>@(((Ogrenci)((((IList)ViewData["students"])[i]))).Soyad)</td>
+                </tr> *@
+
+            }
+        </tbody>
+    </table>
+    @* <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>ad</th>
+                <th>soyad</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>ahmet</td>
+                <td>mehmet</td>
+
+            </tr>
+
+            <tr>
+                <td>2</td>
+                <td>ali</td>
+                <td>veli</td>
+            </tr>
+        </tbody>
+
+    </table> *@
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Ad</th>
+                <th>Soyad</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                   @*  <td>@item.Id</td> *@
+                    <td>@item.Ad</td>
+                    <td>@item.Soyad</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
