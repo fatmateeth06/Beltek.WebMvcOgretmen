@@ -53,41 +53,32 @@ namespace Beltek.WebMvc.Controllers
         //    // Eğer model geçerli değilse, ekleme sayfasını tekrar göster
         //    return View(ogt);
         //}
+
+     
         [HttpPost]
         public IActionResult AddTeacher(Ogretmen ogt)
         {
-            using (var ctx = new OkulDbContext())
+            if (ModelState.IsValid)
             {
-                ctx.Ogretmenler.Add(ogt);
-                ctx.SaveChanges();
+                using (var ctx = new OkulDbContext())
+                {
+                    ctx.Ogretmenler.Add(ogt);
+                    ctx.SaveChanges();
+                }
+                return RedirectToAction("ListTeacher");
             }
-            return RedirectToAction("ListTeacher");
-            
+            else
+            {
+                // Model geçerli değilse, hata mesajlarını yazdır
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+
+                // Sayfayı tekrar göster
+                return View(ogt);
+            }
         }
-
-        //public IActionResult AddTeacher(Ogretmen ogt)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        using (var ctx = new OkulDbContext())
-        //        {
-        //            ctx.Ogretmenler.Add(ogt);
-        //            ctx.SaveChanges();
-        //        }
-        //        return RedirectToAction("ListTeacher");
-        //    }
-        //    else
-        //    {
-        //        // Model geçerli değilse, hata mesajlarını yazdır
-        //        foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-        //        {
-        //            Console.WriteLine(error.ErrorMessage);
-        //        }
-
-        //        // Sayfayı tekrar göster
-        //        return View(ogt);
-        //    }
-        //}
 
 
         public IActionResult ListTeacher()
