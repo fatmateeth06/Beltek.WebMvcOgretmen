@@ -8,7 +8,7 @@ namespace Beltek.WebMvc.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("ListTeacher");
         }
         [HttpGet]
         public IActionResult AddTeacher()
@@ -56,38 +56,60 @@ namespace Beltek.WebMvc.Controllers
         [HttpPost]
         public IActionResult AddTeacher(Ogretmen ogt)
         {
-            if (ModelState.IsValid)
+            using (var ctx = new OkulDbContext())
             {
-                using (var ctx = new OkulDbContext())
-                {
-                    ctx.Ogretmenler.Add(ogt);
-                    ctx.SaveChanges();
-                }
-                return RedirectToAction("ListTeacher");
+                ctx.Ogretmenler.Add(ogt);
+                ctx.SaveChanges();
             }
-            else
-            {
-                // Model geçerli değilse, hata mesajlarını yazdır
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-
-                // Sayfayı tekrar göster
-                return View(ogt);
-            }
+            return RedirectToAction("ListTeacher");
+            //return View();
         }
+
+        //public IActionResult AddTeacher(Ogretmen ogt)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        using (var ctx = new OkulDbContext())
+        //        {
+        //            ctx.Ogretmenler.Add(ogt);
+        //            ctx.SaveChanges();
+        //        }
+        //        return RedirectToAction("ListTeacher");
+        //    }
+        //    else
+        //    {
+        //        // Model geçerli değilse, hata mesajlarını yazdır
+        //        foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+        //        {
+        //            Console.WriteLine(error.ErrorMessage);
+        //        }
+
+        //        // Sayfayı tekrar göster
+        //        return View(ogt);
+        //    }
+        //}
 
 
         public IActionResult ListTeacher()
         {
-            List<Ogretmen> ogretmenListesi;
+
+            List<Ogretmen> lst;
+
             using (var ctx = new OkulDbContext())
             {
-                ogretmenListesi = ctx.Ogretmenler.ToList();
+                lst = ctx.Ogretmenler.ToList();
             }
-            return View("ListTeacher", ogretmenListesi);
+            return View(lst);
         }
+        //public IActionResult ListTeacher()
+        //{
+        //    List<Ogretmen> ogretmenListesi;
+        //    using (var ctx = new OkulDbContext())
+        //    {
+        //        ogretmenListesi = ctx.Ogretmenler.ToList();
+        //    }
+        //    return View("ListTeacher", ogretmenListesi);
+        //}
 
 
 
@@ -139,17 +161,33 @@ namespace Beltek.WebMvc.Controllers
         //    return RedirectToAction("ListTeacher");
         //}
 
-        public IActionResult UpdateTeacher(string TcKimlik)
+
+        public IActionResult UpdateTeacher(string id)
         {
-            Ogretmen ogt;
+            Ogretmen ogrt;
             using (var ctx = new OkulDbContext())
             {
-                ogt = ctx.Ogretmenler.Find(TcKimlik);
+                ogrt = ctx.Ogretmenler.FirstOrDefault(o => o.TcKimlik == id);
             }
-            return View(ogt);
 
+            if (ogrt == null)
+            {
+                return NotFound("Öğretmen bulunamadı");
+            }
 
+            return View(ogrt);
         }
+        //public IActionResult UpdateTeacher(string TcKimlik)
+        //{
+        //    Ogretmen ogt;
+        //    using (var ctx = new OkulDbContext())
+        //    {
+        //        ogt = ctx.Ogretmenler.Find(TcKimlik);
+        //    }
+        //    return View(ogt);
+
+
+        //}
         //[HttpPost]//yazmak zorundayız submitten sonrası çalışmaz
         //public IActionResult UpdateTeacher(Ogretmen ogt)
         //{
