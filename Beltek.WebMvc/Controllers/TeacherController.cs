@@ -164,18 +164,18 @@ namespace Beltek.WebMvc.Controllers
 
         public IActionResult UpdateTeacher(string id)
         {
-            Ogretmen ogrt;
+            Ogretmen ogt;
             using (var ctx = new OkulDbContext())
             {
-                ogrt = ctx.Ogretmenler.FirstOrDefault(o => o.TcKimlik == id);
+                ogt = ctx.Ogretmenler.FirstOrDefault(o => o.TcKimlik == id);
             }
 
-            if (ogrt == null)
+            if (ogt == null)
             {
                 return NotFound("Öğretmen bulunamadı");
             }
 
-            return View(ogrt);
+            return View(ogt);
         }
         //public IActionResult UpdateTeacher(string TcKimlik)
         //{
