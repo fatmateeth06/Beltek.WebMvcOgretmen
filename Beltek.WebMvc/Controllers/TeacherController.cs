@@ -62,7 +62,7 @@ namespace Beltek.WebMvc.Controllers
                 ctx.SaveChanges();
             }
             return RedirectToAction("ListTeacher");
-            //return View();
+            
         }
 
         //public IActionResult AddTeacher(Ogretmen ogt)
